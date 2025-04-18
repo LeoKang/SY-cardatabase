@@ -1,23 +1,37 @@
 package com.packt.cardatabase.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.HashSet;
+import java.util.Set;
+import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Owner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ownerid;
     private String firstname, lastname;
+
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "car_owner", joinColumns = {
+            @JoinColumn(name = "ownerid")},
+            inverseJoinColumns = {
+            @JoinColumn(name = "id")
+    })
+    private Set<Car> cars = new HashSet<Car>();
+
+    public Owner(String firstname, String lastname) {
+        super();
+        this.firstname = firstname;
+        this.lastname = lastname;
+    }
 }

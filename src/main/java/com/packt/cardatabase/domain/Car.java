@@ -1,12 +1,14 @@
 package com.packt.cardatabase.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 public class Car {
 
@@ -18,7 +20,14 @@ public class Car {
 
     private int modelYear, price;
 
-    public Car(String brand, String model, String color, String registrationNumber, int modelYear, int price) {
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name="owner")
+    private Owner owner;
+
+    @ManyToMany(mappedBy = "cars")
+    private Set<Owner> owners = new HashSet<>();
+
+    public Car(String brand, String model, String color, String registrationNumber, int modelYear, int price, Owner owner) {
         super();
         this.brand = brand;
         this.model = model;
@@ -26,25 +35,6 @@ public class Car {
         this.registrationNumber = registrationNumber;
         this.modelYear = modelYear;
         this.price = price;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
+        this.owner = owner;
     }
 }
