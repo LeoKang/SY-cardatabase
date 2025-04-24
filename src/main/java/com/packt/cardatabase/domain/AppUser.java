@@ -26,4 +26,11 @@ public class AppUser {
 
     @Column(nullable = false)
     private String role;
+
+    public AppUser(String username, String password, String role) {
+        super();
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 }

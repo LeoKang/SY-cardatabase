@@ -1,16 +1,13 @@
 package com.packt.cardatabase;
 
 import java.util.Arrays;
+
+import com.packt.cardatabase.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import com.packt.cardatabase.domain.Car;
-import com.packt.cardatabase.domain.CarRepository;
-import com.packt.cardatabase.domain.Owner;
-import com.packt.cardatabase.domain.OwnerRepository;
 
 @SpringBootApplication
 public class CardatabaseApplication implements CommandLineRunner {
@@ -20,10 +17,12 @@ public class CardatabaseApplication implements CommandLineRunner {
 
     private final CarRepository repository;
     private final OwnerRepository orepository;
+    private final AppUserRepository urepository;
 
-    public CardatabaseApplication(CarRepository repository, OwnerRepository orepository) {
+    public CardatabaseApplication(CarRepository repository, OwnerRepository orepository, AppUserRepository urepository) {
         this.repository = repository;
         this.orepository = orepository;
+        this.urepository = urepository;
     }
 
     public static void main(String[] args) {
@@ -44,5 +43,12 @@ public class CardatabaseApplication implements CommandLineRunner {
         for (Car car : repository.findAll()) {
             logger.info("brand: {}, model: {}", car.getBrand(), car.getModel());
         }
+
+        // id = 'user', password = 'user'
+        urepository.save(new AppUser("user",
+                "$2y$10$f5QmHrghX7uluaH82Aa8qOiVb6EwkxOMYTWvqREwnsktqhudrdj/6", "USER"));
+        // id = 'admin', password = 'admin'
+        urepository.save(new AppUser("admin",
+                "$2y$10$uoZ7EENF/giyCF/B9/0Z/.rLf7/i39SdNBhsUMwGYgpZETHtb01g6", "ADMIN"));
     }
 }
