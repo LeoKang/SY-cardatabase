@@ -29,12 +29,19 @@ public class JwtService {
     public String getAuthUser(HttpServletRequest request) {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         if(token != null) {
+/*
             String user = Jwts.parser().verifyWith((SecretKey) key).build()
                     .parseSignedClaims(token.replace(PREFIX, "")).getBody().getSubject();
+*/
 
-            if(user != null) {
+            //https://myeongju00.tistory.com/112
+            String user = Jwts.builder()
+                    .signWith(key)
+                    .compact();
+
+            if(user != null)
                 return user;
-            }
+
         }
 
         return null;

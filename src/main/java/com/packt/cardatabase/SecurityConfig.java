@@ -16,6 +16,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import com.packt.cardatabase.service.UserDetailsServiceImpl;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -36,6 +38,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf((csrf) -> csrf.disable()).cors(withDefaults()).
+                authorizeHttpRequests((authorizeHttpRequests)->
+                authorizeHttpRequests.anyRequest().permitAll());
+
+/*
         http.csrf((csrf) -> csrf.disable())
                 .sessionManagement((sessionManagement)->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -45,6 +52,7 @@ public class SecurityConfig {
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling((exceptionHandling)
                         -> exceptionHandling.authenticationEntryPoint(exceptionHandler));
+*/
 
         return http.build();
     }
