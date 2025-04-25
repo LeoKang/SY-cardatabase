@@ -1,9 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-import {getCars} from "../api/carapi";
-import { CarResponse } from "../types";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {deleteCars, getCars} from "../api/carapi";
+import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
 
 function Carlist() {
+    const queryClient = useQueryClient();
+
     const {data, error, isSuccess} = useQuery({
         queryKey: ["cars"],
         queryFn: getCars
@@ -15,8 +16,25 @@ function Carlist() {
         {field: 'color', headerName: 'Color', width: 200},
         {field: 'registrationNumber', headerName: 'Reg.nr', width: 150},
         {field: 'modelYear', headerName: 'Model Year', width: 150},
-        {field: 'price', headerName: 'Price', width: 150}
+        {field: 'price', headerName: 'Price', width: 150},
+        {field: 'delete', headerName: '', width: 90,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            renderCell: (params: GridCellParams)=> (
+            <button onClick={() => mutate(params.row._links.car.href)}
+            >Delete</button>
+        )}
     ];
+
+    const {mutate} = useMutation(deleteCars, {
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ['cars']});
+        },
+        onError: (err) => {
+            console.error(err);
+        },
+    });
 
     if(!isSuccess) {
         return <span>Loading...</span>
@@ -27,6 +45,7 @@ function Carlist() {
             <DataGrid
                 rows={data}
                 columns={columns}
+                disableRowSelectionOnClick={true}
                 getRowId={row=>row._links.self.href}/>
         )
     }
