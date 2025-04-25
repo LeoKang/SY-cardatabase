@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {deleteCars, getCars} from "../api/carapi";
+import {deleteCar, getCars} from "../api/carapi";
 import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
 
 function Carlist() {
@@ -27,7 +27,7 @@ function Carlist() {
         )}
     ];
 
-    const {mutate} = useMutation(deleteCars, {
+    const {mutate} = useMutation(deleteCar, {
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ['cars']});
         },

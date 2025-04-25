@@ -7,7 +7,8 @@ export const getCars = async (): Promise<CarResponse[]> => {
     return response.data._embedded.cars;
 }
 
-export const deleteCars = async (link: string): Promise<CarResponse> => {
+export const deleteCar = async (link: string): Promise<CarResponse> => {
     const response = await axios.delete(link);
+
     return response.data;
 }
