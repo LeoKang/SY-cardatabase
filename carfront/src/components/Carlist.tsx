@@ -5,6 +5,7 @@ import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
 import { Snackbar, IconButton } from "@mui/material";
 import AddCar from "./AddCar";
 import EditCar from "./EditCar";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function Carlist() {
     const [open, setOpen] = useState(false);
@@ -41,8 +42,9 @@ function Carlist() {
                 if(window.confirm(`Are you sure you want to delete ${params.row.brand} ${params.row.model}?`)) {
                     mutate(params.row._links.car.href);
                 }
-            }}
-            >Delete</IconButton>
+            }}>
+                <DeleteIcon fontSize="small"/>
+            </IconButton>
         ),},
     ];
 
