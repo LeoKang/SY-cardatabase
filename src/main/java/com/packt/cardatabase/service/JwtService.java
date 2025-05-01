@@ -33,15 +33,8 @@ public class JwtService {
             String user = Jwts.parser().verifyWith((SecretKey) key).build()
                     .parseSignedClaims(token.replace(PREFIX, "")).getBody().getSubject();
 
-/*
-            //https://myeongju00.tistory.com/112
-            String user = Jwts.builder()
-                    .signWith(key)
-                    .compact();
-*/
             if(user != null)
                 return user;
-
         }
 
         return null;
