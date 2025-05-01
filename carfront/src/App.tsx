@@ -1,7 +1,7 @@
-import { AppBar, CssBaseline, Toolbar, Typography } from '@mui/material';
-import Container from '@mui/material/Container';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import Login from './components/Login';
+import { AppBar, CssBaseline, Toolbar, Typography } from "@mui/material";
+import Container from "@mui/material/Container";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Login from "./components/Login";
 
 const queryClient = new QueryClient();
 
@@ -11,16 +11,14 @@ function App() {
       <CssBaseline />
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6">
-            Car Shop
-          </Typography>
+          <Typography variant="h6">Car Shop</Typography>
         </Toolbar>
       </AppBar>
       <QueryClientProvider client={queryClient}>
         <Login />
       </QueryClientProvider>
     </Container>
-  )
+  );
 }
 
-export default App
+export default App;
